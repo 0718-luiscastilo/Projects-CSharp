@@ -1,0 +1,5 @@
+F:\Programacion\Repositorios\Projects C#\Sistema_Procesamiento_Liquidación_Nómina\programa\obj\Debug\net10.0\programa.GeneratedMSBuildEditorConfig.editorconfig
+F:\Programacion\Repositorios\Projects C#\Sistema_Procesamiento_Liquidación_Nómina\programa\obj\Debug\net10.0\programa.AssemblyInfoInputs.cache
+F:\Programacion\Repositorios\Projects C#\Sistema_Procesamiento_Liquidación_Nómina\programa\obj\Debug\net10.0\programa.AssemblyInfo.cs
+F:\Programacion\Repositorios\Projects C#\Sistema_Procesamiento_Liquidación_Nómina\programa\obj\Debug\net10.0\programa.csproj.CoreCompileInputs.cache
+F:\Programacion\Repositorios\Projects C#\Sistema_Procesamiento_Liquidación_Nómina\programa\obj\Debug\net10.0\programa.sourcelink.json
