@@ -50,7 +50,7 @@ public abstract class Empleado : INominable{
         Nombre = "Empleado";
         SueldoBase = 0;
     }
-    public override strting detalleEmpleado{
+    public override string DetalleEmpleado{
         get{
             return $"ID: {Id}, Nombre: {Nombre}, Sueldo Base: {SueldoBase:C}";
         }
