@@ -1,6 +1,6 @@
 using System;
 public class Ejecutivo : EmpleadoTiempoCompleto{
-    private int BonoGestion;
+    private int Bono_Gestion;
     public int BonoGestion{ 
         get{
             return BonoGestion;

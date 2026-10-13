@@ -50,7 +50,7 @@ public abstract class Empleado : INominable{
         Nombre = "Empleado";
         SueldoBase = 0;
     }
-    public override string DetalleEmpleado{
+    public virtual string DetalleEmpleado{
         get{
             return $"ID: {Id}, Nombre: {Nombre}, Sueldo Base: {SueldoBase:C}";
         }
@@ -58,7 +58,7 @@ public abstract class Empleado : INominable{
     ~Empleado(){
         Console.WriteLine($"[Liberando memoria]: Objeto Empleado con ID {id} destruido.");
     }
-
+    public abstract int CalcularSueldoNeto();
 
 
 }

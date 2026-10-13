@@ -6,3 +6,4 @@ public interface INominable{
     // Método para calcular el sueldo neto
     int CalcularSueldoNeto();
 }
+    
