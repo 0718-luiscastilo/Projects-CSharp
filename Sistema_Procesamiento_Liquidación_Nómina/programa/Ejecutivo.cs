@@ -3,11 +3,11 @@ public class Ejecutivo : EmpleadoTiempoCompleto{
     private int Bono_Gestion;
     public int BonoGestion{ 
         get{
-            return BonoGestion;
+            return Bono_Gestion;
         }
         set{
             if(value >= 0){
-                BonoGestion = value;
+                Bono_Gestion = value;
             }else{
                 throw new ArgumentException("El bono de gestión del ejecutivo no puede ser negativo.");
             }
