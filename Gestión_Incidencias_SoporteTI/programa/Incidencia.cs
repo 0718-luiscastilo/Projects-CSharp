@@ -6,15 +6,14 @@ public class Incidencia{
     private string descripcion;
     private string prioridad;
     private string estado;
+    
     public string Identificador { 
         get {
             return identificador;
         } 
         set {
-            if(string.IsNullOrWhite(value)){
-                throw new Exception("El identificador no puede estar vacío");
             identificador = value;
-            }
+            
         }
     }
     public string NombreIncidencia { 
@@ -22,10 +21,8 @@ public class Incidencia{
             return nombreIncidencia;
         } 
         set {
-            if(string.IsNullOrWhite(value)){
-                throw new Exception("El identificador no puede estar vacío");
             identificador = value;
-            }
+
         }
     }
     public string NombreEmpleado { 
@@ -33,11 +30,8 @@ public class Incidencia{
             return nombreEmpleado;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del empleado no puede estar vacío");
-            nombreEmpleado = value;
-            }
-            
+        
+            nombreEmpleado = value;    
         }
     }
     public string Descripcion { 
@@ -45,35 +39,27 @@ public class Incidencia{
             return descripcion;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del empleado no puede estar vacío");
             descripcion = value;
         }
-    }
     }
     public string Prioridad { 
         get {
             return prioridad;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del empleado no puede estar vacío");
             prioridad = value;
         }
-    }
+    
     }
     public string Estado { 
         get {
             return estado;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del empleado no puede estar vacío");
             estado = value;
         }
-        }
     }
-    public Incidencia(string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado){
+    public Incidencia(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado){
         this.nombreIncidencia = nombreIncidencia;
         this.nombreEmpleado = nombreEmpleado;
         this.descripcion = descripcion;

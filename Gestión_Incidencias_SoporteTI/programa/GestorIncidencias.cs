@@ -1,23 +1,11 @@
 using System;
 public class GestorIncidencias{
-    private Incidencia[] incidencias;
-    private int totalIncidencias;
-    
-    public GestorIncidencias(){
-        incidencias = new Incidencia[20];
-        totalIncidencias = 0;    
-    }
-    public void RegistrarIncidencia(Incidencia incidencia){
-        if(totalIncidencias >= incidencias.Length){
-                throw new InvalidOperationException("No se pueden registrar más incidencias.");
+    public static void RegistrarIncidencia(Incidencia[] incidencias, int totalIncidencias, int MAX_INCIDENCIAS){
+        if(totalIncidencias >= MAX_INCIDENCIAS){
+            Console.WriteLine("No se perrmite mas Incidencias");
         }
-        if(incidencia == null){
-            throw new ArgumentNullException(nameof(incidencia), "La incidencia no puede ser nula.");
-        }
-        incidencias[totalIncidencias] = incidencia;
-        totalIncidencias++;
     }
-    public void MostrarTodasLasIncidencias(){
+    public static  void MostrarTodasLasIncidencias(Incidencia[] incidencias, int totalIncidencias){
         Console.WriteLine("INCIDENCIAS REGISTRADAS:");
         Console.WriteLine("--------------------");
         for(int i = 0; i < totalIncidencias; i++){
@@ -25,7 +13,7 @@ public class GestorIncidencias{
             Console.WriteLine("--------------------");
         }
     }
-    public void BuscarPorIdentificador(){
+    public static void BuscarPorIdentificador(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para buscar.");
             return;
@@ -48,7 +36,7 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontró ninguna incidencia con el identificador proporcionado.");
         }
     }
-    public void BuscarPorEmpleado(){
+    public static void BuscarPorEmpleado(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para filtrar por empleado.");
             return;
@@ -61,7 +49,7 @@ public class GestorIncidencias{
         }
         bool encontrado = false;
         for(int i = 0; i < totalIncidencias; i++){
-            if(incidencias[i].NombreEmpleado().Equals(nombreEmpleado, StringComparison.OrdinalIgnoreCase)){
+            if(incidencias[i].NombreEmpleado.Equals(nombreEmpleado, StringComparison.OrdinalIgnoreCase)){
                 incidencias[i].mostrarInformacion();
                 encontrado = true;
             }
@@ -70,7 +58,7 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontraron incidencias para el empleado proporcionado.");
         }
     }
-    public void FiltrarPorPrioridad(){
+    public static void FiltrarPorPrioridad(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para filtrar por prioridad.");
             return;
@@ -92,7 +80,7 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontraron incidencias con la prioridad proporcionada.");
         }
     }
-    public void FiltrarPorEstado(){
+    public static void FiltrarPorEstado(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para filtrar por estado.");
             return;
@@ -114,7 +102,7 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontraron incidencias con el estado proporcionado.");
         }
     }
-    public void FiltrarPorTipo(){
+    public static void FiltrarPorTipo(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para filtrar por tipo.");
             return;
@@ -136,7 +124,7 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontraron incidencias del tipo proporcionado.");
         }
     }
-    public void CambiarEstado(){
+    public static void CambiarEstado(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para cambiar su estado.");
             return;
@@ -195,14 +183,14 @@ public class GestorIncidencias{
             Console.WriteLine("No se encontró ninguna incidencia con el identificador proporcionado.");
         }
     }
-    public void MostrarTotalIncidencias(){
+    public static void MostrarTotalIncidencias(Incidencia[] incidencia, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas.");
             return;
         }
         Console.WriteLine($"Total de incidencias registradas: {totalIncidencias}");
     }
-    public void MostrarEstadisticasPorEstado(){
+    public static void MostrarEstadisticasPorEstado(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para mostrar estadísticas.");
             return;
@@ -226,7 +214,7 @@ public class GestorIncidencias{
         Console.WriteLine($"En Proceso: {enProceso}");
         Console.WriteLine($"Resueltas: {resueltas}");
     }
-    public void MostrarEstadisticasPorPrioridad(){
+    public static void MostrarEstadisticasPorPrioridad(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para mostrar estadísticas.");
             return;
@@ -254,7 +242,7 @@ public class GestorIncidencias{
         Console.WriteLine($"Baja: {baja}");
         Console.WriteLine($"Crítica: {critica}");
     }
-    public void MostrarEstadisticasPorTipo(){
+    public static void MostrarEstadisticasPorTipo(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para mostrar estadísticas.");
             return;
@@ -278,7 +266,7 @@ public class GestorIncidencias{
         Console.WriteLine($"Software: {software}");
         Console.WriteLine($"Red: {red}");
     }
-    public void MostrarPorcentajePorEstado(){
+    public static void MostrarPorcentajePorEstado(Incidencia[] incidencias, int totalIncidencias){
         if(totalIncidencias == 0){
             Console.WriteLine("No hay incidencias registradas para mostrar estadísticas.");
             return;
@@ -302,18 +290,30 @@ public class GestorIncidencias{
         Console.WriteLine($"En Proceso: {(double)enProceso / totalIncidencias * 100:F2}%");
         Console.WriteLine($"Resueltas: {(double)resueltas / totalIncidencias * 100:F2}%");
     }
-    public void MostrarResumenEstadistico(){
-        if(totalIncidencias == 0){
-            Console.WriteLine("No hay incidencias registradas para mostrar estadísticas.");
-            return;
-        }
-        MostrarEstadisticasPorEstado();
-        MostrarEstadisticasPorPrioridad();
-        MostrarEstadisticasPorTipo();
-        MostrarPorcentajePorEstado();
-    }
-    public void mostrarmenu(){
     
+    public static int MostrarMenu(){
+        int opcion;
+        do{
+            Console.Clear();
+            Console.WriteLine("========================================");
+            Console.WriteLine("=====  SISTEMA DE GESTIÓN DE INCIDENCIAS TI =====");
+            Console.WriteLine("1. Registrar incidencia.");
+            Console.WriteLine("2. Mostrar todas las incidencias.");
+            Console.WriteLine("3. Buscar por identificador.");
+            Console.WriteLine("4. Buscar por empleado");
+            Console.WriteLine("5. Filtrar por prioridad");
+            Console.WriteLine("6. Filtrar por estado.");
+            Console.WriteLine("7. Filtrar por tipo");
+            Console.WriteLine("8. Cambiar estado de incidencia.");
+            Console.WriteLine("9. Salir.");
+            Console.WriteLine("Seleccione una opcion: ");
+            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 9){
+                return opcion;
+            }
+            Console.WriteLine("Error. Debe seleccionar una opcion valida. ");
+            Console.WriteLine();
+
+        }while(true);
     }
     
 }

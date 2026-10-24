@@ -1,22 +1,19 @@
 using System;
-public class IncidenciaHardware : Incidencia, IProcesable{
+public class IncidenciaSoftware : Incidencia, IProcesable{
     private string aplicacionAfectada;
     public string AplicacionAfectada { 
         get {
             return aplicacionAfectada;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre de la aplicación afectada no puede estar vacío");
             aplicacionAfectada = value;
-            }
         }
     }
-    public IncidenciaHardware(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado, string aplicacionAfectada) 
-    : base(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado){
+    public IncidenciaSoftware(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, 
+    string estado, string aplicacionAfectada) : base(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado){
         this.aplicacionAfectada = aplicacionAfectada;
     }
-    public IncidenciaHardware() : base(){
+    public IncidenciaSoftware() : base(){
         this.aplicacionAfectada = "";
     }
     public virtual void mostrarInformacion(){
@@ -28,7 +25,7 @@ public class IncidenciaHardware : Incidencia, IProcesable{
         Console.WriteLine("Estado: " + Estado);
         Console.WriteLine("Aplicación afectada: " + AplicacionAfectada);
     }
-    public void procesarIncidencia(){
+    public void ProcesarIncidencia(){
         Console.WriteLine("Diagnosticando " + NombreIncidencia + " del empleado " + NombreEmpleado + " en la aplicación " + AplicacionAfectada);
     }
      

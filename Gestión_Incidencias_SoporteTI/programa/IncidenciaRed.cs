@@ -1,22 +1,19 @@
 using System;
-public class IncidenciaHardware : Incidencia, IProcesable{
-    private string recursoAfectado:
+public class IncidenciaRed : Incidencia, IProcesable{
+    private string recursoAfectado;
     public string RecursoAfectado { 
         get {
             return recursoAfectado;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del recurso afectado no puede estar vacío");
             recursoAfectado = value;
             }
-        }
     }
-    public IncidenciaHardware(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado, string recursoAfectado) 
+    public IncidenciaRed(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado, string recursoAfectado) 
     : base(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado){
         this.recursoAfectado = recursoAfectado;
     }
-    public IncidenciaHardware() : base(){
+    public IncidenciaRed() : base(){
         this.recursoAfectado = "";
     }
     public virtual void mostrarInformacion(){
@@ -28,7 +25,7 @@ public class IncidenciaHardware : Incidencia, IProcesable{
         Console.WriteLine("Estado: " + Estado);
         Console.WriteLine("Recurso afectado: " + RecursoAfectado);
     }
-    public void procesarIncidencia(){
+    public void ProcesarIncidencia(){
         Console.WriteLine("Diagnosticando " + NombreIncidencia + " del empleado " + NombreEmpleado + " en el recurso " + RecursoAfectado);
     }
     

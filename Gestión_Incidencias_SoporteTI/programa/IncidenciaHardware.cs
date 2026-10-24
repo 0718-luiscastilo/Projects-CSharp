@@ -6,18 +6,13 @@ public class IncidenciaHardware : Incidencia, IProcesable{
             return equipoAfectado;
         } 
         set {
-            if(string.IsNullOrEmpty(value)){
-                throw new Exception("El nombre del equipo afectado no puede estar vacío");
             equipoAfectado = value;
-            }
+    
         }
     }
-    public IncidenciaHardware(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado, string equipoAfectado) 
-    : base(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado){
+    public IncidenciaHardware(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, 
+    string estado, string equipoAfectado) : base(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado){
         this.equipoAfectado = equipoAfectado;
-    }
-    public IncidenciaHardware() : base(){
-        this.equipoAfectado = "";
     }
     public virtual void mostrarInformacion(){
         Console.WriteLine("Identificador: " + Identificador);
@@ -28,7 +23,7 @@ public class IncidenciaHardware : Incidencia, IProcesable{
         Console.WriteLine("Estado: " + Estado);
         Console.WriteLine("Equipo afectado: " + EquipoAfectado);
     }
-    public void procesarIncidencia(){
+    public void ProcesarIncidencia(){
         Console.WriteLine("Diagnosticando " + NombreIncidencia + " del empleado " + NombreEmpleado + " en el equipo " + EquipoAfectado);
     }
 
