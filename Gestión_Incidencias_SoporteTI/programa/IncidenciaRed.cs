@@ -6,6 +6,9 @@ public class IncidenciaRed : Incidencia, IProcesable{
             return recursoAfectado;
         } 
         set {
+            if (string.IsNullOrWhiteSpace(value)){
+                throw new ArgumentException("El equipo afectado no puede estar vacío.");
+            }
             recursoAfectado = value;
             }
     }
@@ -17,12 +20,7 @@ public class IncidenciaRed : Incidencia, IProcesable{
         this.recursoAfectado = "";
     }
     public virtual void mostrarInformacion(){
-        Console.WriteLine("Identificador: " + Identificador);
-        Console.WriteLine("Nombre de la incidencia: " + NombreIncidencia);
-        Console.WriteLine("Nombre del empleado: " + NombreEmpleado);
-        Console.WriteLine("Descripción: " + Descripcion);
-        Console.WriteLine("Prioridad: " + Prioridad);
-        Console.WriteLine("Estado: " + Estado);
+        base.mostrarInformacion();
         Console.WriteLine("Recurso afectado: " + RecursoAfectado);
     }
     public void ProcesarIncidencia(){

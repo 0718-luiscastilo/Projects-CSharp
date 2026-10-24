@@ -1,10 +1,64 @@
 using System;
 public class GestorIncidencias{
-    public static void RegistrarIncidencia(Incidencia[] incidencias, int totalIncidencias, int MAX_INCIDENCIAS){
-        if(totalIncidencias >= MAX_INCIDENCIAS){
-            Console.WriteLine("No se perrmite mas Incidencias");
-        }
+    public static void RegistrarIncidencia(Incidencia[] incidencias, int totalIncidencias,int MAX_INCIDENCIAS){
+    // 1. Verificar que haya espacio disponible
+    if (totalIncidencias >= MAX_INCIDENCIAS){
+        Console.WriteLine("No se permiten más incidencias.");
+        return;
     }
+    // 2. Solicitar los datos generales
+    Console.WriteLine("\n===== REGISTRAR INCIDENCIA =====");
+    Console.Write("Ingrese el identificador: ");
+    string identificador = Console.ReadLine();
+    Console.Write("Ingrese el nombre de la incidencia: ");
+    string nombreIncidencia = Console.ReadLine();
+    Console.Write("Ingrese el nombre del empleado: ");
+    string nombreEmpleado = Console.ReadLine();
+    Console.Write("Ingrese la descripción: ");
+    string descripcion = Console.ReadLine();
+    Console.Write("Ingrese la prioridad (Baja, Media, Alta, Crítica): ");
+    string prioridad = Console.ReadLine();
+    Console.Write("Ingrese el estado (Abierta, En Proceso, Resuelta): ");
+    string estado = Console.ReadLine();
+    // 3. Seleccionar el tipo de incidencia
+    Console.WriteLine("\nSeleccione el tipo de incidencia:");
+    Console.WriteLine("1. Hardware");
+    Console.WriteLine("2. Software");
+    Console.WriteLine("3. Red");
+    Console.Write("Opción: ");
+
+    string opcion = Console.ReadLine();
+    Incidencia nuevaIncidencia = null;
+
+    // 4. Crear el objeto correspondiente
+    switch (opcion){
+        case "1":
+            Console.Write("Ingrese el equipo afectado: ");
+            string equipoAfectado = Console.ReadLine();
+            nuevaIncidencia = new IncidenciaHardware(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado, equipoAfectado);
+            break;
+        case "2":
+            Console.Write("Ingrese la aplicación afectada: ");
+            string aplicacionAfectada = Console.ReadLine();
+            nuevaIncidencia = new IncidenciaSoftware(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado, aplicacionAfectada);
+            break;
+        case "3":
+            Console.Write("Ingrese el recurso de red afectado: ");
+            string recursoAfectado = Console.ReadLine();
+            nuevaIncidencia = new IncidenciaRed(identificador, nombreIncidencia, nombreEmpleado, descripcion, prioridad, estado,  recursoAfectado);
+            break;
+
+        default:
+            Console.WriteLine("Tipo de incidencia no válido.");
+            return;
+    }
+    // 5. Guardar la incidencia en el arreglo
+    incidencias[totalIncidencias] = nuevaIncidencia;
+    // 6. Confirmar el registro
+    Console.WriteLine("\nIncidencia registrada correctamente.");
+    Console.WriteLine("Identificador: " + identificador);
+}
+
     public static  void MostrarTodasLasIncidencias(Incidencia[] incidencias, int totalIncidencias){
         Console.WriteLine("INCIDENCIAS REGISTRADAS:");
         Console.WriteLine("--------------------");

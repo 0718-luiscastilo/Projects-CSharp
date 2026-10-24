@@ -21,7 +21,7 @@ public class Incidencia{
             return nombreIncidencia;
         } 
         set {
-            identificador = value;
+            nombreIncidencia = value;
 
         }
     }
@@ -60,6 +60,7 @@ public class Incidencia{
         }
     }
     public Incidencia(string identificador, string nombreIncidencia, string nombreEmpleado, string descripcion, string prioridad, string estado){
+        this.identificador = identificador;
         this.nombreIncidencia = nombreIncidencia;
         this.nombreEmpleado = nombreEmpleado;
         this.descripcion = descripcion;
@@ -75,6 +76,7 @@ public class Incidencia{
         this.estado = "Abierta";
     }
     public virtual void mostrarInformacion(){
+        Console.WriteLine("Identificador: " + identificador);
         Console.WriteLine("Nombre de la Incidencia: " + nombreIncidencia);
         Console.WriteLine("Nombre del Empleado: " + nombreEmpleado);
         Console.WriteLine("Descripcion: " + descripcion);
