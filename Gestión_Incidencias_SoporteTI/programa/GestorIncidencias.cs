@@ -1,6 +1,6 @@
 using System;
 public class GestorIncidencias{
-    public static void RegistrarIncidencia(Incidencia[] incidencias, int totalIncidencias,int MAX_INCIDENCIAS){
+    public static void RegistrarIncidencia(Incidencia[] incidencias, ref int totalIncidencias,int MAX_INCIDENCIAS){
     // 1. Verificar que haya espacio disponible
     if (totalIncidencias >= MAX_INCIDENCIAS){
         Console.WriteLine("No se permiten más incidencias.");
@@ -10,6 +10,12 @@ public class GestorIncidencias{
     Console.WriteLine("\n===== REGISTRAR INCIDENCIA =====");
     Console.Write("Ingrese el identificador: ");
     string identificador = Console.ReadLine();
+    for (int i = 0; i < totalIncidencias; i++){
+        if (string.Equals(incidencias[i].Identificador, identificador, StringComparison.OrdinalIgnoreCase)){
+            Console.WriteLine("Ya existe una incidencia con ese identificador.");
+        return;
+        }
+    }
     Console.Write("Ingrese el nombre de la incidencia: ");
     string nombreIncidencia = Console.ReadLine();
     Console.Write("Ingrese el nombre del empleado: ");
@@ -54,6 +60,8 @@ public class GestorIncidencias{
     }
     // 5. Guardar la incidencia en el arreglo
     incidencias[totalIncidencias] = nuevaIncidencia;
+    incidencias[totalIncidencias] = nuevaIncidencia;
+    totalIncidencias++;
     // 6. Confirmar el registro
     Console.WriteLine("\nIncidencia registrada correctamente.");
     Console.WriteLine("Identificador: " + identificador);
@@ -103,6 +111,7 @@ public class GestorIncidencias{
         }
         bool encontrado = false;
         for(int i = 0; i < totalIncidencias; i++){
+            nombreEmpleado = nombreEmpleado.Trim();
             if(incidencias[i].NombreEmpleado.Equals(nombreEmpleado, StringComparison.OrdinalIgnoreCase)){
                 incidencias[i].mostrarInformacion();
                 encontrado = true;
@@ -199,8 +208,10 @@ public class GestorIncidencias{
                     Console.WriteLine("El estado no puede estar vacío. Ingrese nuevamente:");
                     nuevoEstado = Console.ReadLine();
                 }
-                if(nuevoEstado != "Abierta" && nuevoEstado != "En Proceso" && nuevoEstado != "Resuelta"){
-                    Console.WriteLine("El estado ingresado no es válido. Debe ser 'Abierta', 'En Proceso' o 'Resuelta'.");
+                if (!nuevoEstado.Equals("Abierta", StringComparison.OrdinalIgnoreCase) && 
+                !nuevoEstado.Equals("En Proceso", StringComparison.OrdinalIgnoreCase) &&
+                !nuevoEstado.Equals("Resuelta", StringComparison.OrdinalIgnoreCase)){
+                    Console.WriteLine("El estado ingresado no es válido.");
                     return;
                 }
 
@@ -229,7 +240,8 @@ public class GestorIncidencias{
                     incidencias[i].Estado = nuevoEstado;
                     Console.WriteLine("El estado de la incidencia ha sido cambiado a 'Resuelta'.");               
                     return;
-                }    
+                }
+                Console.WriteLine("No se pudo realizar el cambio de estado solicitado.");    
                 break;
             }
         }
@@ -344,11 +356,16 @@ public class GestorIncidencias{
         Console.WriteLine($"En Proceso: {(double)enProceso / totalIncidencias * 100:F2}%");
         Console.WriteLine($"Resueltas: {(double)resueltas / totalIncidencias * 100:F2}%");
     }
+    public static void MostrarResumenEstadistico(Incidencia[] incidencias, int totalIncidencias){
+        MostrarEstadisticasPorEstado(incidencias, totalIncidencias);
+        MostrarEstadisticasPorPrioridad(incidencias, totalIncidencias);
+        MostrarEstadisticasPorTipo(incidencias, totalIncidencias);
+        MostrarPorcentajePorEstado(incidencias, totalIncidencias);
+    }
     
     public static int MostrarMenu(){
         int opcion;
         do{
-            Console.Clear();
             Console.WriteLine("========================================");
             Console.WriteLine("=====  SISTEMA DE GESTIÓN DE INCIDENCIAS TI =====");
             Console.WriteLine("1. Registrar incidencia.");
@@ -359,9 +376,10 @@ public class GestorIncidencias{
             Console.WriteLine("6. Filtrar por estado.");
             Console.WriteLine("7. Filtrar por tipo");
             Console.WriteLine("8. Cambiar estado de incidencia.");
-            Console.WriteLine("9. Salir.");
+            Console.WriteLine("9. Mostrar Estadisticas.");
+            Console.WriteLine("10. Salir.");
             Console.WriteLine("Seleccione una opcion: ");
-            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 9){
+            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 10){
                 return opcion;
             }
             Console.WriteLine("Error. Debe seleccionar una opcion valida. ");

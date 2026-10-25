@@ -9,7 +9,7 @@ public class Program{
             op = GestorIncidencias.MostrarMenu();
             switch(op){
                 case 1:
-                GestorIncidencias.RegistrarIncidencia(incidencias, totalIncidencias, MAX_INCIDENCIAS);
+                GestorIncidencias.RegistrarIncidencia(incidencias, ref totalIncidencias, MAX_INCIDENCIAS);
                 break;
                 case 2:
                 GestorIncidencias.MostrarTodasLasIncidencias(incidencias, totalIncidencias);
@@ -33,12 +33,15 @@ public class Program{
                 GestorIncidencias.CambiarEstado(incidencias, totalIncidencias);
                 break;
                 case 9:
+                GestorIncidencias.MostrarResumenEstadistico(incidencias, totalIncidencias);
+                break;
+                case 10:
                 Console.WriteLine("Gracias por utilizar el Sistema.");
                 break;
                 default:
                 Console.WriteLine("Opción no reconocida.");
                 break;
             }
-        }while(op != 9);
+        }while(op != 10);
     }
 }
