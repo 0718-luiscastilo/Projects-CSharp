@@ -1,5 +1,5 @@
 using System;
-public class Maquina{
+public class MaquinaIndustrial{
     private int id;
     private string nombre;
     private string modelo;
@@ -27,16 +27,18 @@ public class Maquina{
             if (string.IsNullOrWhiteSpace(value)){
                 throw new ArgumentException("El Nombre no puede estar vacio");
             }
+            nombre = value;
         }
     }
     public string Modelo{
         get{
-            return nodelo;
+            return modelo;
         }
         set{
             if (string.IsNullOrWhiteSpace(value)){
                 throw new ArgumentException("El modelo no puede estar vacio");
             }
+            modelo = value;
         }
     }
     public int TempMaquina{
@@ -58,6 +60,7 @@ public class Maquina{
             if(value < 0){
                 throw new ArgumentException("Las horas de Funcionamiento no puede ser negativa");
             }
+            horasFuncionamiento = value;
         }
     }
     public int CantidadPiezas{
@@ -71,6 +74,7 @@ public class Maquina{
             {
                 throw new ArgumentException("La cantidad de piezas no puede ser negativa");
             }
+            cantidadPiezas = value;
         }
     }
     public string Estado
@@ -85,9 +89,10 @@ public class Maquina{
             {
                 throw new ArgumentException("El estado no puede estar vacio");
             }
+            estado = value;
         }
     }
-    public Maquina(int id, string nombre, string modelo, int tempMaquina, int horasFuncionamiento, int cantidadPiezas, string estado)
+    public MaquinaIndustrial(int id, string nombre, string modelo, int tempMaquina, int horasFuncionamiento, int cantidadPiezas, string estado)
     {
         this.id = id;
         this.nombre = nombre;
@@ -97,13 +102,27 @@ public class Maquina{
         this.cantidadPiezas = cantidadPiezas;
         this.estado = estado;
     }
+    public void condicionMaquina()
+    {
+        if(tempMaquina < 60)
+        {
+            Console.WriteLine("La temeperatura de la maquina esta Normal");
+        } else if(tempMaquina > 60 && tempMaquina < 80)
+        {
+            Console.WriteLine("Adertencia. La temeperatura esta alta");
+        }else
+        {
+            Console.WriteLine("Critica. La Temperatura esta demasiado alta");
+        }
+    }
+
     public void mostrarInformacion()
     {
         Console.WriteLine("Id: " + id);
         Console.WriteLine("Nombre: " + nombre);
         Console.WriteLine("Modelo: " + modelo);
         Console.WriteLine("Temperatura: " + tempMaquina);
-        Console.WriteLine("Horas de Funcionamiento: " + cantidadPiezas);
+        Console.WriteLine("Horas de Funcionamiento: " + horasFuncionamiento);
         Console.WriteLine("Cantidad de Piezas: " + cantidadPiezas);
         Console.WriteLine("Estado: " + estado);
         
