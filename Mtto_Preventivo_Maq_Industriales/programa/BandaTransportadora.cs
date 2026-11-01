@@ -59,7 +59,7 @@ using System;
             LongitudBanda = longitudBanda;
             CapacidadCarga = capacidadCarga;
         }
-        public override void MostrarInformacion()
+        public override void mostrarInformacion()
         {
             base.mostrarInformacion();
             Console.WriteLine("Velocidad de la Banda: " + velocidadBanda + " m/s");
