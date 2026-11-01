@@ -116,7 +116,7 @@ public class MaquinaIndustrial{
         }
     }
 
-    public void mostrarInformacion()
+    public virtual void mostrarInformacion()
     {
         Console.WriteLine("Id: " + id);
         Console.WriteLine("Nombre: " + nombre);

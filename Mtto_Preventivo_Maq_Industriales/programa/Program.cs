@@ -7,6 +7,7 @@ public class Program
         maquina.mostrarInformacion();
         Console.WriteLine();
         maquina.condicionMaquina();
+        maquina.TempMaquina =-50;
         
     }
 }
