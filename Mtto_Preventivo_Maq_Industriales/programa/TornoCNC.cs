@@ -71,14 +71,7 @@ public class TornoCNC : MaquinaIndustrial
     {
         Console.WriteLine("Se esta ranurando la pieza");
     }
-    public void IniciarTransporte()
-    {
-        Console.WriteLine("La Maquina " + Nombre + " esta transportando la pieza");
-    }
-    public void DetenerTransporte()
-    {
-        Console.WriteLine("La Maquina " + Nombre + " ha detenido el transporte de la pieza");
-    }
     
+
     
 }
