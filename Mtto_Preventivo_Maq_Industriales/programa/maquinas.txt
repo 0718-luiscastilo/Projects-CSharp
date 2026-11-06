@@ -1,0 +1,3 @@
+TornoCNC,1,Torno,CNC-505,85,60,120,Operativa,500,20,Herramienta A
+Fresadora,2,Fresadora,CNC-507,40,80,20,Operativa,600,3,Herramienta B
+BandaTransportadora,3,Banda Trasportadora,CNC878,40,500,130,Operativa,60,100,50
