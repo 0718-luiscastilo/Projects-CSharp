@@ -17,6 +17,7 @@ public class TornoCNC : MaquinaIndustrial
             {
                 throw new ArgumentException ("La velocidad no puede ser negativa.");
             }
+            velocidadHusillo = value;
         }
     }
     public double DiametroMaximo
@@ -31,6 +32,7 @@ public class TornoCNC : MaquinaIndustrial
             {
                 throw new ArgumentException ("El Diametro no puede ser menor que cero.");
             }
+            diametroMaximo = value;
         }
     }
      public string TipoHerramienta
@@ -45,6 +47,7 @@ public class TornoCNC : MaquinaIndustrial
             {
                 throw new AggregateException("El tipo de hermanienta no puede estar vacio");
             }
+            tipoHerramienta = value;
         }
     }
     public TornoCNC(int id, string nombre, string modelo, 

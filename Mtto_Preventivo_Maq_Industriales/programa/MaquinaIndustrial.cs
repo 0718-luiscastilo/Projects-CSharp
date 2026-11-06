@@ -49,6 +49,7 @@ public class MaquinaIndustrial{
             if (value < 0){
                 throw new ArgumentException("La temperatura no puede ser negaviva");
             }
+             tempMaquina = value;
         }
     }
     public int HorasFuncionamiento{

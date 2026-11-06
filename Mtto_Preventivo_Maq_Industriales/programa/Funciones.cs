@@ -113,6 +113,12 @@ using System.Text;
                     {
                         Console.WriteLine("El ID debe ser un número positivo. Ingrese nuevamente el ID de la máquina: ");
                     }
+                    for (int i = 0; i < totalMaquinas; i++){
+                        if (maquinas[i].Id == idFresadora){
+                            Console.WriteLine("El ID ingresado ya existe. No se puede registrar la máquina.");
+                            return;
+                        }
+                    }
                     Console.WriteLine("Ingrese el nombre de la máquina: ");
                     string nombreFresadora = Console.ReadLine() ?? "";
                     while (string.IsNullOrWhiteSpace(nombreFresadora))
@@ -192,6 +198,12 @@ using System.Text;
                     while (!int.TryParse(Console.ReadLine(), out idBandaTransportadora) || idBandaTransportadora <= 0)
                     {
                         Console.WriteLine("El ID debe ser un número positivo. Ingrese nuevamente el ID de la máquina: ");
+                    }
+                    for (int i = 0; i < totalMaquinas; i++){
+                        if (maquinas[i].Id == idBandaTransportadora){
+                            Console.WriteLine("El ID ingresado ya existe. No se puede registrar la máquina.");
+                            return;
+                        }
                     }
                     Console.WriteLine("Ingrese el nombre de la máquina: ");
                     string nombreBandaTransportadora = Console.ReadLine() ?? "";
@@ -288,7 +300,7 @@ using System.Text;
             {
                 Console.WriteLine("El ID debe ser un número positivo. Ingrese nuevamente el ID de la máquina: ");
             }
-            int index = 0;
+            int index = -1;
             for (int i = 0; i < totalMaquinas; i++){
                 if (maquinas[i].Id == idMonitoreo){ 
                     index = i;
@@ -300,6 +312,9 @@ using System.Text;
                         Console.WriteLine("Critica. La Temperatura de la maquina " + maquinas[index].Nombre + " esta demasiado alta");
                     }     
                 }
+            }
+            if(index == -1){
+                Console.WriteLine("No se encontró una máquina con el ID proporcionado.");
             }
         }
         public static void cambioEstadoMaquina(MaquinaIndustrial[] maquinas, int totalMaquinas){

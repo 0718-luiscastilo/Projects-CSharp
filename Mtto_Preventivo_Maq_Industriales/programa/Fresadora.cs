@@ -16,6 +16,7 @@ public class Fresadora : MaquinaIndustrial
             {
                 throw new AggregateException ("La velocidad de corte no puede ser negaviva");
             }
+            velocidadCorte = value;
         }
     }
     public int NumeroEjes
@@ -30,6 +31,7 @@ public class Fresadora : MaquinaIndustrial
             {
                 throw new AggregateException("El numero de Ejes no puede ser negativo");
             }
+            numeroEjes = value;
         }
     }
     public string TipoFresa
@@ -44,6 +46,7 @@ public class Fresadora : MaquinaIndustrial
             {
                 throw new AggregateException("El tipo de Fresa no puede esta vacia");
             }
+            tipoFresa = value;
         }
     }
     public Fresadora(int id, string nombre, string modelo, 
