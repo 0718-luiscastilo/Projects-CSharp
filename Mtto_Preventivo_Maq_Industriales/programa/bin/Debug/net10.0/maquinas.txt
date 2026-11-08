@@ -1,2 +1,2 @@
-TornoCNC,1,Torno,CNC505,80,250,450,En mantenimiento,400,20,Herramienta A
-
+TornoCNC,1,Torno CNC,CNC-505,85,0,500,En mantenimiento,500,20,Herramienta A
+Fresadora,2,FresadoraCNC,CNC-505,50,600,100,En mantenimiento,500,3,Fresa A
