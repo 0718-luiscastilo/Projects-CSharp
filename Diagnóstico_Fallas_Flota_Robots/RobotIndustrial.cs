@@ -8,7 +8,7 @@ using System;
         private double horasFuncionamiento;
         private double temperaturaMotor;
         private string estado;
-        private int cantidadFallos;
+        private int cantidadFallas;
         public int Id{
             get { 
                 return id; 
@@ -97,15 +97,15 @@ using System;
                 estado = value; 
             }
         }
-        public int CantidadFallos{
+        public int CantidadFallas{
             get { 
-                return cantidadFallos; 
+                return cantidadFallas; 
             }
             set {
                 if(value < 0){
                     throw new ArgumentException("La cantidad de fallos no puede ser negativa.");
                 }
-                cantidadFallos = value; 
+                cantidadFallas = value; 
             }
         }
         public RobotIndustrial(int id, string nombre, string modelo, string fabricante, int anioFabricacion, double horasFuncionamiento, double temperaturaMotor, string estado, int cantidadFallos){
@@ -117,9 +117,13 @@ using System;
             HorasFuncionamiento = horasFuncionamiento;
             TemperaturaMotor = temperaturaMotor;
             Estado = estado;
-            CantidadFallos = cantidadFallos;
+            CantidadFallas = cantidadFallos;
         }
-        public virtual void mostrarInformacion(){
+        public abstract void EjecutarTarea();
+        public void RegistrarFalla(){
+            CantidadFallas++;
+        }
+        public virtual void MostrarInformacion(){
             Console.WriteLine($"ID: {id}");
             Console.WriteLine($"Nombre: {nombre}");
             Console.WriteLine($"Modelo: {modelo}");
@@ -128,7 +132,7 @@ using System;
             Console.WriteLine($"Horas de Funcionamiento: {horasFuncionamiento}");
             Console.WriteLine($"Temperatura del Motor: {temperaturaMotor}");
             Console.WriteLine($"Estado: {estado}");
-            Console.WriteLine($"Cantidad de Fallos: {cantidadFallos}");
+            Console.WriteLine($"Cantidad de Fallos: {cantidadFallas}");
         }
     
     }
