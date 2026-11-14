@@ -3,7 +3,7 @@ using System;
     public class RobotEnsamblaje : RobotIndustrial{
         private int cantidadPiezasEnsambladas;
         private double precisionMilimetrica;
-        private string tipoHerramienta;
+        private string tipoHerramienta = string.Empty;
         public int CantidadPiezasEnsambladas{
             get{
             return cantidadPiezasEnsambladas; 

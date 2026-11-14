@@ -2,7 +2,7 @@ using System;
 
 public class RobotSoldadura: RobotIndustrial{
         private double temperaturaSoldadura;
-        private string tipoSoldadura;
+        private string tipoSoldadura  = string.Empty;
         private int cantidadSoldaduras;
         public double TemperaturaSoldadura{
             get{

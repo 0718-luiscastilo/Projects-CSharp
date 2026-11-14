@@ -1,13 +1,13 @@
 using System;
     public abstract class RobotIndustrial{
         private int id;
-        private string nombre;
-        private string modelo;
-        private string fabricante;
+        private string nombre = string.Empty;
+        private string modelo = string.Empty;
+        private string fabricante = string.Empty;
         private int anioFabricacion;
         private double horasFuncionamiento;
         private double temperaturaMotor;
-        private string estado;
+        private string estado = string.Empty;
         private int cantidadFallas;
         public int Id{
             get { 
