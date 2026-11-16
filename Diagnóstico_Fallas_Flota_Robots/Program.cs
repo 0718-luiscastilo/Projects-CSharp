@@ -5,6 +5,8 @@ public class Programa{
         int totalRobots =0;
         RobotIndustrial[] robots = new RobotIndustrial[MAX_ROBOT];
         Funciones.RegistarRobot(robots, ref totalRobots,MAX_ROBOT);
+        ReporteFalla[] reportes = new ReporteFalla[100];
+        int contadorReportes = 0;
 
     }
 }

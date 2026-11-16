@@ -1,5 +1,6 @@
 using System;
-    public class Funciones{
+using System.Security.Cryptography.X509Certificates;
+public class Funciones{
         public static void RegistarRobot(RobotIndustrial[] robot, ref int totalRobot, int MAX_ROBOT){
             if(totalRobot >= MAX_ROBOT){
                 Console.WriteLine("No se pueden registrar mas robots. Se ha alcanzado el limite");
@@ -398,7 +399,7 @@ using System;
             robots[index].Estado = nuevoEstado;
             Console.WriteLine($"El estado del Robot {robots[index].Nombre} ha sido cambiado a {nuevoEstado}.");
         }
-        public static void MofificarHoras(RobotIndustrial[] robots, int totalRobots){
+        public static void ModificarHoras(RobotIndustrial[] robots, int totalRobots){
             if(totalRobots == 0){
                 Console.WriteLine("No hay ningun robot registrado.");
                 return;
@@ -458,5 +459,104 @@ using System;
             }else{
                 Console.WriteLine("Condicion Detectada: NO REQUIERE MANTENIMIENTO");
             }        
+        }
+        public static void MostarRobotRequiereMtto(RobotIndustrial[] robots, int totalRobots){
+            if(totalRobots == 0){
+                Console.WriteLine("No hay ningun robot registrado.");
+                return;
+            }
+            Console.WriteLine("Robots que requieren Mantenimiento");
+            for(int i = 0; i < totalRobots; i++){
+                if(robots[i].HorasFuncionamiento > 2000){
+                    robots[i].MostrarInformacion();
+                }
+            }
+        }
+        public static void RegistarReporteFalla(ReporteFalla[] reportes, int contadorReportes){ 
+            if(contadorReportes == reportes.Length){
+                Console.WriteLine("No hay espacio para hacer mas reportes");
+            }
+            Console.WriteLine("Ingrese el Id del Reporte:");
+            int idReporte;
+            while (!int.TryParse(Console.ReadLine(), out idReporte) || idReporte <= 0){
+                Console.WriteLine("El ID debe ser un número positivo. Ingrese nuevamente el ID del Reporte: ");
+            }
+            for(int i=0; i < contadorReportes; i++){
+                if(reportes[i].IdReporte == idReporte){
+                    Console.WriteLine("El Id ya existe. No se puede registar el reporte");
+                    return;
+                }
+            }
+            Console.WriteLine("Ingrese el Id del Robot:");
+            int idRobotReporte;
+            while (!int.TryParse(Console.ReadLine(), out idRobotReporte) || idRobotReporte <= 0){
+                Console.WriteLine("El ID debe ser un número positivo. Ingrese nuevamente el ID del Reporte: ");
+            }
+            DateTime fecha = DateTime.Now;
+            Console.WriteLine("Ingrese el la descripcion del Reporte");
+            string descripcionReporte = Console.ReadLine() ?? "";
+            while (string.IsNullOrWhiteSpace(descripcionReporte)){
+                Console.WriteLine("La descrpcion no puede esta vacia ");
+                descripcionReporte = Console.ReadLine() ?? "";
+            }
+            Console.WriteLine("Ingrese el Severidad de la falla");
+            string severidadReporte = Console.ReadLine() ?? "";
+            while (string.IsNullOrWhiteSpace(severidadReporte)){
+                Console.WriteLine("La severidad no puede esta vacia ");
+                severidadReporte = Console.ReadLine() ?? "";
+            }
+            while(!severidadReporte.Equals("Baja", StringComparison.OrdinalIgnoreCase) && 
+            !severidadReporte.Equals("Alta", StringComparison.OrdinalIgnoreCase) && 
+            !severidadReporte.Equals("Media", StringComparison.OrdinalIgnoreCase) &&
+            !severidadReporte.Equals("Critica", StringComparison.OrdinalIgnoreCase)){
+                Console.WriteLine("La srveridad es invalida. Debe ser 'Baja', 'Alta','Media' o 'Critica'.");
+                Console.WriteLine("Ingrese el Severidad de la falla");
+                severidadReporte = Console.ReadLine() ?? "";
+            }
+            Console.WriteLine("Ingrese el Estado del reporte");
+            string estadoReporte = Console.ReadLine() ?? "";
+            while (string.IsNullOrWhiteSpace(estadoReporte)){
+                Console.WriteLine("El estado del reporte no puede estar vacio ");
+                estadoReporte = Console.ReadLine() ?? "";
+            }
+            while(!estadoReporte.Equals("Pediente", StringComparison.OrdinalIgnoreCase) && 
+            !estadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase) && 
+            !estadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
+                Console.WriteLine("El estado del Reporte es invalido. Debe ser 'Pediente', 'En Revision' o 'Resuelto'.");
+                Console.WriteLine("Ingrese el Estado del reporte");
+                estadoReporte = Console.ReadLine() ?? "";
+            }
+            Console.WriteLine("Ingrese la solicitud del reporte");
+            string solucitudReporte = Console.ReadLine() ?? "";
+            while (string.IsNullOrWhiteSpace(solucitudReporte)){
+                Console.WriteLine("La solucitud del reporte no puede estar vacia ");
+                solucitudReporte = Console.ReadLine() ?? "";
+            }
+            ReporteFalla rep = new ReporteFalla(idReporte,idRobotReporte,fecha,descripcionReporte,severidadReporte,estadoReporte,solucitudReporte);
+            reportes[contadorReportes] = rep;
+            contadorReportes++;
+            Console.WriteLine("El reporte se agrego con exito.");
+        }
+        public static void ConsultarReporte(ReporteFalla[] reportes, int contadorReportes){
+            if(contadorReportes == 0){
+                Console.WriteLine("No hay reportes que mostrar");
+                return;
+            }
+            Console.WriteLine("Ingrese el Id del Reporte");
+            int idReporte;
+            while(!int.TryParse(Console.ReadLine(), out idReporte) || idReporte <= 0){
+                Console.WriteLine("El ID debe ser un numero positivo. Ingrese nuevamente el ID");
+            }
+            int index =-1;
+            for(int i =0; i < contadorReportes; i++){
+                if(reportes[i].IdReporte == idReporte){
+                    index =i;
+                    break;
+                }
+            }
+            if(index == -1){
+                Console.WriteLine("No se encontro ningun robot con ese Id");
+            }
+            reportes[index].MostrarReporte();
         }
     }
