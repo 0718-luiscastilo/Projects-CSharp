@@ -1,5 +1,8 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Text;
+
 public class Funciones{
         public static void RegistarRobot(RobotIndustrial[] robot, ref int totalRobot, int MAX_ROBOT){
             if(totalRobot >= MAX_ROBOT){
@@ -559,4 +562,300 @@ public class Funciones{
             }
             reportes[index].MostrarReporte();
         }
+        public static void ActualizarEstadoFalla(ReporteFalla[] reportes, int contadorReportes){
+            if(contadorReportes == 0){
+                Console.WriteLine("No hay reportes que mostrar");
+                return;
+            }
+            Console.WriteLine("Ingrese el Id del Reporte");
+            int idReporte;
+            while(!int.TryParse(Console.ReadLine(), out idReporte) || idReporte <= 0){
+                Console.WriteLine("El ID debe ser un numero positivo. Ingrese nuevamente el ID");
+            }
+            int index =-1;
+            for(int i =0; i < contadorReportes; i++){
+                if(reportes[i].IdReporte == idReporte){
+                    index =i;
+                    break;
+                }
+            }
+            if(index == -1){
+                Console.WriteLine("No se encontro ningun robot con ese Id");
+            }
+            Console.WriteLine("Ingrese el nuevo estado del la Falla  (Pendiente, En Revision, Resuelto): ");
+            string nuevoEstadoReporte = Console.ReadLine() ?? "";
+            while(!nuevoEstadoReporte.Equals("Pendiente", StringComparison.OrdinalIgnoreCase) && 
+                  !nuevoEstadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase) && 
+                  !nuevoEstadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
+                    Console.WriteLine("Estado inválido. El estado debe ser 'Pendiente', 'En Revision' o 'Resuelto'.");
+                    Console.WriteLine("Ingrese el nuevo estado de la Falla: ");
+                    nuevoEstadoReporte = Console.ReadLine() ?? "";
+            }
+            if (reportes[index].EstadoReporte.Equals(nuevoEstadoReporte, StringComparison.OrdinalIgnoreCase)){
+                Console.WriteLine("El estado ingresado es el mismo que el actual");
+                return;
+            }
+            if (reportes[index].EstadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
+                Console.WriteLine("No se puede cambiar el estado de una falla ya resuelta");
+                return;
+            }
+            if(reportes[index].EstadoReporte.Equals("Pendiente", StringComparison.OrdinalIgnoreCase) && 
+            nuevoEstadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase)){
+                reportes[index].EstadoReporte = nuevoEstadoReporte;
+                Console.WriteLine($"El estado del Reporte ha sido cambiado a {nuevoEstadoReporte}.");
+                return;
+            }
+            if(reportes[index].EstadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase) && 
+            nuevoEstadoReporte.Equals("Pendiente", StringComparison.OrdinalIgnoreCase)){
+               Console.WriteLine("No se puede cambiar un estado de Revision a Pendiente");
+               return;
+            }
+            if(reportes[index].EstadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase) && 
+            nuevoEstadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
+                reportes[index].EstadoReporte = nuevoEstadoReporte;
+                Console.WriteLine($"El estado del Reporte ha sido cambiado a {nuevoEstadoReporte}.");
+                return;
+            }
+            if(reportes[index].EstadoReporte.Equals("Pendiente", StringComparison.OrdinalIgnoreCase) && 
+            nuevoEstadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
+               Console.WriteLine("No se puede cambiar un estado de Pendiente a Resuelto");
+               return;
+            }
+        }
+        public static void GenerarReporteRobot(RobotIndustrial[] robots, int totalRobots){
+            if(totalRobots == 0){
+                Console.WriteLine("No hay ningun robot registrado.");
+                return;
+            }          
+            int operativo =0;
+            int mantenimiento =0;
+            int fueraServicio = 0;
+            for(int i =0; i < totalRobots; i++){
+                switch (robots[i].Estado.ToLower()){
+                    case "Operativo":
+                        operativo++;
+                        break;  
+                    case "En Mantenimiento":
+                        mantenimiento++;
+                        break;  
+                    case "Fuera de Servicio":
+                        fueraServicio++;
+                        break;  
+                }
+            }
+            double disponiblidad = (operativo / totalRobots)*100;
+
+            Console.WriteLine($"===== REPORTE DE FLOTA =====" );
+            Console.WriteLine();
+            Console.WriteLine($"Total de Robots: {totalRobots}" );
+            Console.WriteLine($"Robots en opreracion: {operativo}." );
+            Console.WriteLine($"Robots en Mantenimiento: {mantenimiento}." );
+            Console.WriteLine($"Robots en Fuera de Servicio: {fueraServicio}" );
+            Console.WriteLine($"Disponibilidad de la Flota: {disponiblidad}" ); 
+        }
+        public static void GenerarReporteFalla(ReporteFalla[] reportes, int contadorReportes){
+            if(contadorReportes == 0){
+                Console.WriteLine("No hay ninguna falla registrada.");
+                return;
+            }          
+            int pendiente =0;
+            int enRevision =0;
+            int resueltas = 0;
+            for(int i =0; i < contadorReportes; i++){
+                switch (reportes[i].EstadoReporte.ToLower()){
+                    case "Pendientes":
+                        pendiente++;
+                        break;  
+                    case "En Revision":
+                        enRevision++;
+                        break;  
+                    case "Resuelto":
+                        resueltas++;
+                        break;  
+                }
+            }
+            Console.WriteLine($"===== REPORTE DE FALLAS =====" );
+            Console.WriteLine();
+            Console.WriteLine($"Total de Fallas: {contadorReportes}" );
+            Console.WriteLine($"Fallas Pendientes: {pendiente}." );
+            Console.WriteLine($"Fallas en Revision: {enRevision}." );
+            Console.WriteLine($"Fallas Resueltas: {resueltas}" );   
+        }
+        public static void guardarRobots(RobotIndustrial[] robots, int totalRobots){
+            using (StreamWriter writer = new StreamWriter("robots.txt")){
+                for(int i=0; i < totalRobots; i++){
+                    string datos = robots[i].Id + "," +
+                        robots[i].Nombre + "," + robots[i].Modelo + "," +
+                        robots[i].Fabricante + "," + robots[i].AnioFabricacion + "," +
+                        robots[i].HorasFuncionamiento + "," + robots[i].TemperaturaMotor + "," +
+                        robots[i].Estado + "," + robots[i].CantidadFallas;
+                    if(robots[i] is RobotEnsamblaje ensamble){
+                        datos =  "Robot Ensablaje" + datos +
+                        ensamble.CantidadPiezasEnsambladas + "," +
+                        ensamble.PrecisionMilimetrica + ", " +
+                        ensamble.TipoHerramienta;
+                    }
+                    else if(robots[i] is RobotSoldadura soldadura){
+                        datos = "Robot Soldadura" + datos +
+                        soldadura.TemperaturaSoldadura + "," +
+                        soldadura.TipoSoldadura + "," +
+                        soldadura.CantidadSoldaduras; 
+                    }
+                    else if(robots[i] is RobotTransporte transporte){
+                        datos = "Robot de Trasporte" + datos +
+                        transporte.CapacidadCarga + "," +
+                        transporte.VelocidadTrasporte + "," +
+                        transporte.DistanciaRecorrida;
+                    }
+                    writer.WriteLine(datos);
+                }
+            }
+            Console.WriteLine("Datos guardados exitosamente");
+        }
+        public static void CargarRobots(RobotIndustrial[] robots, ref int totalRobots){
+            string archivo = "robots.txt";
+            if (!File.Exists(archivo)){
+                Console.WriteLine("El archivo no existe.");
+                return;
+            }
+            using (StreamReader reader = new StreamReader(archivo)){
+                string linea;
+                while ((linea = reader.ReadLine()) != null){
+                    if (totalRobots >= robots.Length){
+                        Console.WriteLine("Se alcanzó el límite de máquinas.");
+                        break;
+                    }
+                    string[] datos = linea.Split(",");
+                    try{
+                        string tipo= datos[0];
+                        int id = int.Parse(datos[1]);
+                        string nombre =datos[2];
+                        string modelo =datos[3];
+                        string fabricante =datos[4];
+                        int anio = int.Parse(datos[5]);
+                        double horas = double.Parse(datos[6]);
+                        double temperatura = double.Parse(datos[7]);
+                        string estado =datos[8];
+                        int fallas = int.Parse(datos[9]);
+                        RobotIndustrial robot = null;
+
+                        if(tipo=="Robot Ensablaje"){
+                            int piezasEnzabladas = int.Parse(datos[10]);
+                            double presicionMilimetrica = double.Parse(datos[11]);
+                            string tipoHerramienta =datos[12];
+                            robot = new RobotEnsamblaje(id,nombre,modelo,fabricante,anio,horas,temperatura,estado,fallas,piezasEnzabladas,
+                            presicionMilimetrica,tipoHerramienta);
+                        }
+                        if(tipo=="Robot Soldadura"){
+                            double tempSoldadura = double.Parse(datos[10]);
+                            string tipoSoldadura =datos[11];
+                            int cantidadSoldadura = int.Parse(datos[12]);
+                            robot = new RobotSoldadura(id,nombre,modelo,fabricante,anio,horas,temperatura,estado,fallas,tempSoldadura,
+                            tipoSoldadura,cantidadSoldadura);
+                            
+                        }
+                        if(tipo=="Robot de Trasporte"){
+                            double capacidadCarga = double.Parse(datos[10]);
+                            double velTrasporte = double.Parse(datos[11]);
+                            double distanciaRrecorda = double.Parse(datos[12]);
+                            robot = new RobotTransporte(id,nombre,modelo,fabricante,anio,horas,temperatura,estado,fallas,capacidadCarga,
+                            velTrasporte,distanciaRrecorda);
+                        }
+                        else{
+                            Console.WriteLine("Tipo de robot desconocido: " + tipo);
+                            continue;
+                        }
+                        robots[totalRobots] = robot;
+                        totalRobots++;
+                    }catch(Exception ex){
+                         Console.WriteLine("Error al cargar un robot: " + ex.Message);
+                    }
+                }
+                Console.WriteLine("Datos cargados exitosamente.");
+            }   
+        }
+        public static void guardarFalla(ReporteFalla[] reportes, int contadorReportes){
+            using (StreamWriter writer = new StreamWriter("falla.txt")){
+                for(int i=0; i < contadorReportes; i++){
+                    string datos = reportes[i].IdReporte + "," +
+                        reportes[i].IdRobot + "," + reportes[i].Fecha + "," +
+                        reportes[i].Descripcion + "," + reportes[i].Severidad + "," +
+                        reportes[i].EstadoReporte + "," + reportes[i].Solucion;
+                        
+                    writer.WriteLine(datos);
+                }
+            }
+            Console.WriteLine("Datos guardados exitosamente");
+        }
+        public static void CargarFalla(ReporteFalla[] reportes, int contadorReportes){
+            string archivo = "falla.txt";
+            if (!File.Exists(archivo)){
+                Console.WriteLine("El archivo no existe.");
+                return;
+            }
+            using (StreamReader reader = new StreamReader(archivo)){
+                string linea;
+                while ((linea = reader.ReadLine()) != null){
+                    if (contadorReportes >= reportes.Length){
+                        Console.WriteLine("Se alcanzó el límite de máquinas.");
+                        break;
+                    }
+                    string[] datos = linea.Split(",");
+                    try{
+                        int idReporte = int.Parse(datos[0]);
+                        int idRobot = int.Parse(datos[1]);
+                        DateTime fecha;
+                        bool fechaValida = DateTime.TryParseExact(datos[2], "dd/MM/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None,out fecha);
+                        if (!fechaValida){ 
+                            Console.WriteLine("La fecha del reporte no tiene un formato válido.");
+                            continue;
+                        
+                        }
+                        string descripcion =datos[3];
+                        string severidad =datos[4];
+                        string estadoReporte =datos[5];
+                        string solucion =datos[6];
+
+                        ReporteFalla reporte = null;
+                        reporte = new ReporteFalla(idReporte,idRobot,fecha,descripcion,severidad,estadoReporte,solucion);
+                        reportes[contadorReportes] = reporte;
+                        contadorReportes++;
+                    }catch(Exception ex){
+                         Console.WriteLine("Error al cargar un robot: " + ex.Message);
+                    }
+                }
+                Console.WriteLine("Datos cargados exitosamente.");
+            }   
+        }
+        public static int mostrarMenu(){
+            Console.WriteLine("Seleccione una opción:");
+            Console.WriteLine("1. Registrar robot");
+            Console.WriteLine("2. Mostrar todos los robots");
+            Console.WriteLine("3. Buscar robot por ID");
+            Console.WriteLine("4. Buscar robots por fabricante");
+            Console.WriteLine("5. Actualizar estado operativo");
+            Console.WriteLine("6. Modificar horas de funcionamiento");
+            Console.WriteLine("7. Ejecutar diagnóstico de flota");
+            Console.WriteLine("8. Mostrar robots que requieren mantenimiento");
+            Console.WriteLine("9. Registrar reporte de falla");
+            Console.WriteLine("10. Consultar reportes de fallas");
+            Console.WriteLine("11. Actualizar estado de una falla");
+            Console.WriteLine("12. Generar reporte Robot");
+            Console.WriteLine("13. Generar Reporte Falla");
+            Console.WriteLine("14. Guardar información de Robot");
+            Console.WriteLine("15. Cargar información del Robot");
+            Console.WriteLine("16. Guardar información de Falla");
+            Console.WriteLine("17. Cargar información del Falla");
+            Console.WriteLine("18. Salir");
+            Console.WriteLine("Seleccione una opcion: ");
+            int opcion;
+            while(!int.TryParse(Console.ReadLine(), out opcion) || opcion < 1 || opcion > 18)
+            {
+                Console.WriteLine("Opción inválida. Por favor, ingrese un número válido (1-18): ");
+            }
+            return opcion;
+        }
+
+
     }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Diagnóstico_Fallas_Flota_Robots")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64dc1d6394431c923dca785c6b32384b9e2a1a18")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb40c9d75255b8fd6cf5f1b41626af5e05eafac9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Diagnóstico_Fallas_Flota_Robots")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Diagnóstico_Fallas_Flota_Robots")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
