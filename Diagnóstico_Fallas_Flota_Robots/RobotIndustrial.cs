@@ -25,9 +25,7 @@ using System;
                 return nombre; 
             }
             set {
-                    if(string.IsNullOrWhiteSpace(value)){
-                        throw new ArgumentException("El nombre no puede estar vacío.");
-                    }
+                      
                 nombre = value; 
             }
         }

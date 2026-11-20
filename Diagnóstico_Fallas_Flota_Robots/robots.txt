@@ -1,0 +1,3 @@
+Robot Ensablaje, 1,Ensamblador,ENS-001,Abb,2000,900,85,En Mantenimiento,25,500,200, Herramienta A
+Robot Soldadura, 2,Soldador,Sol-258,Abb,2025,500,85,En Mantenimiento,10,900,Soldadura A,3
+Robot de Trasporte, 3,Trasporte,Tas-951,Abb,2024,700,70,En Mantenimiento,4,60,15,100

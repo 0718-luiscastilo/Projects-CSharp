@@ -301,7 +301,7 @@ public class Funciones{
                         Console.WriteLine("La velocidad de trasporte debe ser un número positivo. Ingrese nuevamente la capacidad de velocidad de trasporte del Robot: ");
                     }
                     //Distancia Recorida
-                    Console.WriteLine("Ingrese la -Distancia Recorida del Robot: ");
+                    Console.WriteLine("Ingrese la  Distancia Recorida del Robot: ");
                     double distanciaRoborTrasporte;
                     while (!double.TryParse(Console.ReadLine(), out distanciaRoborTrasporte) || distanciaRoborTrasporte <= 0){
                         Console.WriteLine("La distancia Recorida debe ser un número positivo. Ingrese nuevamente la distancia recorida del Robot: ");
@@ -321,7 +321,9 @@ public class Funciones{
                 return;
             }
             for(int i=0; i<totalRobots; i++){
+                Console.WriteLine("---------------");
                 robots[i].MostrarInformacion();
+                Console.WriteLine("---------------");
             }
         }
         public static void MostrarRobotporId(RobotIndustrial[] robots, int totalRobots){
@@ -475,8 +477,8 @@ public class Funciones{
                 }
             }
         }
-        public static void RegistarReporteFalla(ReporteFalla[] reportes, int contadorReportes){ 
-            if(contadorReportes == reportes.Length){
+        public static void RegistarReporteFalla(ReporteFalla[] reportes, ref int contadorReportes, RobotIndustrial[] robots, int totalRobots){ 
+            if(contadorReportes >= reportes.Length){
                 Console.WriteLine("No hay espacio para hacer mas reportes");
             }
             Console.WriteLine("Ingrese el Id del Reporte:");
@@ -502,7 +504,7 @@ public class Funciones{
                 Console.WriteLine("La descrpcion no puede esta vacia ");
                 descripcionReporte = Console.ReadLine() ?? "";
             }
-            Console.WriteLine("Ingrese el Severidad de la falla");
+            Console.WriteLine("Ingrese el Severidad de la falla (Baja, Alta, Media o Critica)");
             string severidadReporte = Console.ReadLine() ?? "";
             while (string.IsNullOrWhiteSpace(severidadReporte)){
                 Console.WriteLine("La severidad no puede esta vacia ");
@@ -516,28 +518,31 @@ public class Funciones{
                 Console.WriteLine("Ingrese el Severidad de la falla");
                 severidadReporte = Console.ReadLine() ?? "";
             }
-            Console.WriteLine("Ingrese el Estado del reporte");
+            Console.WriteLine("Ingrese el Estado del reporte (Pendiente', 'En Revision' o 'Resuelto')");
             string estadoReporte = Console.ReadLine() ?? "";
             while (string.IsNullOrWhiteSpace(estadoReporte)){
                 Console.WriteLine("El estado del reporte no puede estar vacio ");
                 estadoReporte = Console.ReadLine() ?? "";
             }
-            while(!estadoReporte.Equals("Pediente", StringComparison.OrdinalIgnoreCase) && 
+            while(!estadoReporte.Equals("Pendiente", StringComparison.OrdinalIgnoreCase) && 
             !estadoReporte.Equals("En Revision", StringComparison.OrdinalIgnoreCase) && 
             !estadoReporte.Equals("Resuelto", StringComparison.OrdinalIgnoreCase)){
-                Console.WriteLine("El estado del Reporte es invalido. Debe ser 'Pediente', 'En Revision' o 'Resuelto'.");
+                Console.WriteLine("El estado del Reporte es invalido. Debe ser 'Pendiente', 'En Revision' o 'Resuelto'.");
                 Console.WriteLine("Ingrese el Estado del reporte");
                 estadoReporte = Console.ReadLine() ?? "";
             }
-            Console.WriteLine("Ingrese la solicitud del reporte");
-            string solucitudReporte = Console.ReadLine() ?? "";
-            while (string.IsNullOrWhiteSpace(solucitudReporte)){
-                Console.WriteLine("La solucitud del reporte no puede estar vacia ");
-                solucitudReporte = Console.ReadLine() ?? "";
-            }
-            ReporteFalla rep = new ReporteFalla(idReporte,idRobotReporte,fecha,descripcionReporte,severidadReporte,estadoReporte,solucitudReporte);
+            Console.WriteLine("Ingrese la solución del reporte (puede dejarla vacía):");
+            string solucionReporte = Console.ReadLine()?.Trim() ?? "";
+
+            ReporteFalla rep = new ReporteFalla(idReporte,idRobotReporte,fecha,descripcionReporte,severidadReporte,estadoReporte,solucionReporte);
             reportes[contadorReportes] = rep;
             contadorReportes++;
+            for (int i = 0; i < totalRobots; i++){
+                if (robots[i].Id == idRobotReporte){
+                    robots[i].RegistrarFalla();
+                    break;
+                }
+            }
             Console.WriteLine("El reporte se agrego con exito.");
         }
         public static void ConsultarReporte(ReporteFalla[] reportes, int contadorReportes){
@@ -690,20 +695,20 @@ public class Funciones{
                         robots[i].HorasFuncionamiento + "," + robots[i].TemperaturaMotor + "," +
                         robots[i].Estado + "," + robots[i].CantidadFallas;
                     if(robots[i] is RobotEnsamblaje ensamble){
-                        datos =  "Robot Ensablaje" + datos +
-                        ensamble.CantidadPiezasEnsambladas + "," +
+                        datos =  "Robot Ensablaje" + ", " + datos +
+                        "," + ensamble.CantidadPiezasEnsambladas + "," +
                         ensamble.PrecisionMilimetrica + ", " +
                         ensamble.TipoHerramienta;
                     }
                     else if(robots[i] is RobotSoldadura soldadura){
-                        datos = "Robot Soldadura" + datos +
-                        soldadura.TemperaturaSoldadura + "," +
+                        datos = "Robot Soldadura" + ", "+ datos +
+                        "," + soldadura.TemperaturaSoldadura + "," +
                         soldadura.TipoSoldadura + "," +
                         soldadura.CantidadSoldaduras; 
                     }
                     else if(robots[i] is RobotTransporte transporte){
-                        datos = "Robot de Trasporte" + datos +
-                        transporte.CapacidadCarga + "," +
+                        datos = "Robot de Trasporte" + ", " + datos +
+                        "," + transporte.CapacidadCarga + "," +
                         transporte.VelocidadTrasporte + "," +
                         transporte.DistanciaRecorrida;
                     }
@@ -739,14 +744,14 @@ public class Funciones{
                         int fallas = int.Parse(datos[9]);
                         RobotIndustrial robot = null;
 
-                        if(tipo=="Robot Ensablaje"){
+                        if(tipo.Equals("Robot Ensablaje",StringComparison.OrdinalIgnoreCase)){
                             int piezasEnzabladas = int.Parse(datos[10]);
                             double presicionMilimetrica = double.Parse(datos[11]);
                             string tipoHerramienta =datos[12];
                             robot = new RobotEnsamblaje(id,nombre,modelo,fabricante,anio,horas,temperatura,estado,fallas,piezasEnzabladas,
                             presicionMilimetrica,tipoHerramienta);
                         }
-                        if(tipo=="Robot Soldadura"){
+                        else if(tipo.Equals("Robot Soldadura",StringComparison.OrdinalIgnoreCase)){
                             double tempSoldadura = double.Parse(datos[10]);
                             string tipoSoldadura =datos[11];
                             int cantidadSoldadura = int.Parse(datos[12]);
@@ -754,7 +759,7 @@ public class Funciones{
                             tipoSoldadura,cantidadSoldadura);
                             
                         }
-                        if(tipo=="Robot de Trasporte"){
+                        else if(tipo.Equals("Robot de Trasporte",StringComparison.OrdinalIgnoreCase)){
                             double capacidadCarga = double.Parse(datos[10]);
                             double velTrasporte = double.Parse(datos[11]);
                             double distanciaRrecorda = double.Parse(datos[12]);
@@ -787,7 +792,7 @@ public class Funciones{
             }
             Console.WriteLine("Datos guardados exitosamente");
         }
-        public static void CargarFalla(ReporteFalla[] reportes, int contadorReportes){
+        public static void CargarFalla(ReporteFalla[] reportes,  int contadorReportes){
             string archivo = "falla.txt";
             if (!File.Exists(archivo)){
                 Console.WriteLine("El archivo no existe.");

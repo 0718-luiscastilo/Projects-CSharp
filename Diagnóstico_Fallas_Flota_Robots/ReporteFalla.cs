@@ -95,9 +95,6 @@ using System;
                 return solucion;
             }
             set{
-                if(string.IsNullOrWhiteSpace(value)){
-                    throw new ArgumentException("La solucion no puede estar vacia.");
-                }
                 solucion = value.Trim();
             }
         }
